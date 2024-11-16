@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cn-implementation</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* Style for the info icon */
+      .info-icon {
+        font-size: 20px;
+        cursor: pointer;
+        position: relative;
+        align-items: center;
+        color: solid black;
+      }
+
+      /* Style for the tooltip */
+      .tooltip {
+        visibility: hidden;
+        background-color: black; /* Tooltip background color */
+        color: white; /* Text color */
+        text-align: left;
+        padding: 10px;
+        border-radius: 4px;
+        position: absolute;
+        top: 60%;
+        left: -90%;
+        right: -90%;
+        transform: translateX(-50%);
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        max: width 100%; /* Prevent the tooltip from becoming too wide */
+        word-wrap: break-word; /* Ensure the text wraps properly */
+        white-space: normal; /* Allow wrapping of long lines */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
+      }
+
+      /* Show tooltip when hovering over the icon */
+      .info-icon:hover .tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      /* Style for the copied notification */
+      #copyNotification {
+        display: none;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        background-color: #4caf50;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        z-index: 1000;
+      }
+      .wholeTable {
+        margin-left: 12px;
+        margin-right: 12px;
+        /* box-shadow: -2px 5px 8px 15px; */
+      }
+      .partInput{
+        margin: 10px;
+        
+      }
+     .heading{
+      margin: 5px;
+      align-items: center;
+      visibility: inherit;
+      border-radius: 5px;
+    
+     }
+    </style>
+  </head>
+  <h5 class="heading">General Implementation Plan for Intent CN for Off-the-shelf Single source multiple electrical parts (e.g. Diode, Connector, Resistor, Power Supply, etc.)</h5>
+  <body>
+    Enter Zf Part Number : <input
+      type="text"
+      id="partNumber"
+      placeholder="Enter ZF Part Number"
+      oninput="displayPartNumber()"
+      class="partInput"
+      maxlength="8"
+    />
+    <div class="wholeTable">
+      <table class="table table-bordered border-dark table-hover">
+        <thead class="table-primary">
+          <tr>
+            <th scope="col">No</th>
+            <th scope="col">CA Task Name</th>
+            <th scope="col">Assignee</th>
+            <th scope="col">Sequence</th>
+            <th scope="col">ECAD Librarian action</th>
+            <th scope="col">More Information</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Electrical Part Classification Activity</td>
+            <td>Creator</td>
+            <td>1</td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="Electrical Part Classification Activity for part"
+            >
+              Electrical Part Classification Activity for
+              <span class="printNumberHere">part</span>
+            </td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <div class="tooltip">Tooltip content goes here.</div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">2</th>
+            <td>Component Engineer Review and Approval</td>
+            <td>Creator</td>
+            <td>2</td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="Request CE approval for part"
+            >
+              Request CE approval for <span class="printNumberHere">part</span>
+            </td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip">
+                  "You have been assigned a task CA000XXXXXX, A for the change
+                  notice. 1. Add the required information needed from CE in
+                  ""Implementation Plan description"" field. 2. Add new
+                  documents created for review in Resultant object of the task.
+                  3. Enter comments in the Comments text field below. 4. Click
+                  Complete Task to advance the change activity."
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">3</th>
+            <td>ECAD Library Part Creation Activity</td>
+            <td>Creator</td>
+            <td>2</td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="CAD Activities - PDB, CAD, 3D, Part Delivery for"
+            >
+              CAD Activities - PDB, CAD, 3D, Part Delivery for
+              <span class="printNumberHere">part</span>
+            </td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip">
+                  "You have been assigned a task CA000XXXXXX, A for the change
+                  notice. Following activities need to be done in order to
+                  complete task ECAD Library Part Creation Activity. 1. Based on
+                  the Scenario Identified, update the Implementation task
+                  description. 2. If Scenario 2 or 4, Create required cell and
+                  sent the hkp files for review. 3. If Scenario 3 or 4, Create
+                  required Symbol and sent the symbol files for review. 4. Once
+                  Symbol and cell are available, create PDB in the sandbox. Get
+                  is reviewed by reviewer before adding to central library. 5.
+                  Create CAD IDs in CAD details Tab in EDM 6. If 3d model is
+                  available, assignee the 3d model to the part using 3D Model
+                  manager in EDM. 7. Open Designer and do Packaging of the part
+                  and Forward Annotation in Layout. 8. Add Electrical part, ZF
+                  Manufacturer part and related document as Affected objects in
+                  the CA task 9. Send delivery email to requester once Reviewer
+                  do the Part verification in central library. 9. Enter comments
+                  in the Comments text field below.(if any) 10. Click Complete
+                  Task to advance the change activity."
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">4</th>
+            <td>MCAD 3D Model Creation for Electrical Part</td>
+            <td>Creator</td>
+            <td>2</td>
+            <td>-</td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip"></div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">5</th>
+            <td>Engineer Review and Approval</td>
+            <td>Creator</td>
+            <td>3</td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="Engineer Review and Approval for"
+            >
+              Engineer Review and Approval for
+              <span class="printNumberHere">part</span>
+            </td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip">
+                  "You have been assigned a task CA000XXXXXX, A for the change
+                  notice. Once Electrical Part Classification Activity and ECAD
+                  Library Part Creation Activity is completed Librarian has to
+                  sent the task to Engineer for Review and Approval. 1. Add
+                  Electrical part, ZF Manufacturer part and related document as
+                  Affected objects in the CA task 2. Enter comments in the
+                  Comments text field below.(if any) 3. Click Complete Task to
+                  advance the change activity."
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">6</th>
+            <td>ECAD Librarian Final Review</td>
+            <td>Creator</td>
+            <td>4</td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="ECAD Librarian Final Review for"
+            >
+              ECAD Librarian Final Review for
+              <span class="printNumberHere">part</span>
+            </td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip">
+                  "You have been assigned a task CA000XXXXXX, A for the change
+                  notice. Once Component Engineer Review and Approval, MCAD 3D
+                  Model Creation for Electrical Part and Engineer for Review and
+                  Approval is completed, Librarian will receive this task Final
+                  verification of the part. 1. Add Electrical part, ZF
+                  Manufacturer part and related document as Affected objects in
+                  the CA task 2. Add Electrical part and ZF Manufacturer part as
+                  Resultant objects, set the release state based on the Intent
+                  state of the CN. 3. Add all the related emails, Part delivery
+                  email, summary document, GMT communication emails, related
+                  documents as attachments to the CN 4. Update the part details
+                  based on comments given by CE and Engineer (if any) 5. Click
+                  Complete Task to advance the change activity."
+                </div>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">7</th>
+            <td
+              onclick="copyPartNumber(this)"
+              
+              data-description="MRP Update - Plant Name – Anting"
+            >
+              MRP Update - Plant Name – Anting
+            </td>
+            <td
+              onclick="copyPartNumber(this)"
+              class="description"
+              data-description="Geborek, magdhalena"
+            >
+              Geborek
+            </td>
+            <td>5</td>
+            <td>-</td>
+            <td>
+              <div class="info-icon">
+                ℹ️
+                <!-- Info icon -->
+                <div class="tooltip"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Notification message -->
+    <div id="copyNotification">Copied!</div>
+
+    <script>
+      function displayPartNumber() {
+        const partNumber = document.getElementById("partNumber").value;
+        const partNumberElements =
+          document.querySelectorAll(".printNumberHere");
+        const tdElements = document.querySelectorAll(".description");
+
+        // Update the displayed text
+        partNumberElements.forEach((el) => {
+          el.textContent = partNumber ? partNumber : "Enter Part Number";
+        });
+
+        // Update the data-description attribute for each relevant <td>
+        tdElements.forEach((td) => {
+          const originalText = td
+            .getAttribute("data-description")
+            .split("for")[0]; // Extract original text up to "for"
+          td.setAttribute(
+            "data-description",
+            `${originalText} for ${partNumber || "part"}`
+          );
+        });
+      }
+
+      function copyPartNumber(element) {
+        const partNumberText = element.getAttribute("data-description");
+        navigator.clipboard
+          .writeText(partNumberText)
+          .then(() => {
+            const notification = document.getElementById("copyNotification");
+            notification.style.display = "block";
+            setTimeout(() => {
+              notification.style.display = "none";
+            }, 2000);
+          })
+          .catch(() => {
+            console.error("Failed to copy text.");
+          });
+      }
+    </script>
+  </body>
+</html>
